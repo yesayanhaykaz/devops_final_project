@@ -1,11 +1,14 @@
-AWS Infrastructure Deployment with Terraform, Packer, Ansible, and Kubernetes
+React-Express-MongoDB + Infrastructure Deployment with Terraform, Packer, Ansible, and Kubernetes
+
 This project automates the deployment of a scalable infrastructure on AWS using Terraform, Packer, Ansible, Docker, and Kubernetes (EKS). It includes setting up remote backend storage, database provisioning, continuous deployment for React applications, and securing deployments with GitHub Actions.
 
 Infrastructure Overview
 Terraform: Manages AWS resources including networking, EC2 instances, and EKS clusters.
 Packer + Ansible: Automates the creation and configuration of EC2 instance images with a pre-configured database.
 GitHub Actions: Automates deployment pipelines and ensures security through secrets management and deployment triggers.
+
 Components and Deployment Steps
+
 1. Remote Backend on S3 Bucket
 Terraform is configured to use an S3 bucket as the remote backend to store state files securely.
 
@@ -25,6 +28,7 @@ The backend services are deployed on AWS EKS (Elastic Kubernetes Service) with a
 The main branch in GitHub is protected with mandatory code review approvals before merging. GitHub Actions are configured to manage all deployment processes securely, including handling sensitive information.
 
 Getting Started
+
 To deploy this infrastructure, follow these steps:
 
 Clone Repository: git clone <repository-url>
