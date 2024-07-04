@@ -32,17 +32,11 @@ Getting Started
 To deploy this infrastructure, follow these steps:
 
 Clone Repository: git clone <repository-url>
-
 Set Up AWS Credentials: Configure AWS CLI with credentials.
-
 Deploy Infrastructure: Run Terraform scripts to provision resources.
-
 Configure GitHub Actions: Set up secrets for AWS credentials and adjust deployment workflows as needed.
 
 Repository Structure
-
 /terraform: Contains Terraform scripts for AWS infrastructure.
-
 /packer: Packer templates and Ansible playbooks for EC2 image creation.
-
 .github/workflows: GitHub Actions workflows for CI/CD and deployment.
