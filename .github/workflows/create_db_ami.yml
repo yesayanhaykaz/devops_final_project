@@ -35,10 +35,10 @@ jobs:
           sudo mv packer_install/packer /usr/local/bin/
           rm -rf packer.zip packer_install  # Clean up extracted files and zip
           packer --version  # Verify Packer installation
-          packer init packer_ansible/packer/mongodb.pkr.hcl
+          packer init main/packer/mongodb.pkr.hcl
 
       - name: Validate Packer Template
-        run: packer validate packer_ansible/packer/mongodb.pkr.hcl
+        run: packer validate main/packer/mongodb.pkr.hcl
 
       - name: Run Packer build and print AMI ID
         run: |
