@@ -32,10 +32,6 @@ jobs:
           sudo apt update
           sudo apt install -y ansible
           sudo /opt/pipx/venvs/ansible-core/bin/python -m pip install psycopg2-binary  # Install psycopg2-binary if needed
-     
-      - name: List Files in Ansible Directory
-        run: |
-          cd packer
           
       - name: Install Latest Packer and Initialize
         run: |
@@ -47,7 +43,9 @@ jobs:
           packer init packer/mongodb.pkr.hcl  # Initialize Packer configuration
 
       - name: Validate Packer Template
-        run: packer validate packer/mongodb.pkr.hcl
+        run: |
+          cd packer
+          packer validate packer/mongodb.pkr.hcl
 
       - name: Run Packer build and print AMI ID
         id: packer-build
