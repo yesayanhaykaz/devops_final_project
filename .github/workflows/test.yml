@@ -1,0 +1,17 @@
+name: Build AMI with Packer and Ansible
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-ami:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Print Current Directory
+        run: pwd  # Prints the current directory
+
+      - name: List Files in Current Directory
+        run: ls -l  # Lists files in the current directory
