@@ -13,6 +13,12 @@ jobs:
       AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
     steps:
+      - name: Print Current Directory
+        run: pwd  # Prints the current directory
+
+      - name: List Files in Current Directory
+        run: ls -l  # Lists files in the current directory
+
       - name: Set up Python
         uses: actions/setup-python@v2
         with:
