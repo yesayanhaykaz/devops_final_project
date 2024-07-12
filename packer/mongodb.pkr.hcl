@@ -44,7 +44,7 @@ source "amazon-ebs" "example" {
   source_ami     = var.ami_name
   instance_type  = var.instance_type
   ssh_username   = var.ssh_username
-  ami_name       = "ubuntu-test"
+  ami_name       = "testubuntu-mongodb_ami"
   access_key     = var.aws_access_key       
   secret_key     = var.aws_secret_key   
 }
@@ -53,7 +53,7 @@ build {
   sources = ["source.amazon-ebs.example"]
 
   provisioner "ansible" {
-    playbook_file = "../ansible/playbook.yml"
+    playbook_file = "../ansible/test_playbook.yml"
   }
 }
 

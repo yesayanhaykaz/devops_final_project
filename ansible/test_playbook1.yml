@@ -11,12 +11,7 @@
     mongo_key_url: "https://www.mongodb.org/static/pgp/server-6.0.asc"
     mongo_keyring: "/usr/share/keyrings/mongodb-archive-keyring.gpg"
     mongo_conf_file: "/etc/mongod.conf"
-    db_name: "mydatabase"
-    mongo_admin_user: "admin"
-    mongo_admin_password: "smartes"
-    mongo_db_user: "dbuser"
-    mongo_db_password: "dbpassword"
- 
+
   tasks:
     - name: Install required dependencies
       ansible.builtin.apt:
@@ -89,30 +84,4 @@
       ansible.builtin.systemd:
         name: mongod
         state: restarted
-
-    - name: Create MongoDB admin user
-      community.mongodb.mongodb_user:
-        login_user: "{{ mongo_admin_user }}"      # Provide the MongoDB admin username
-        login_password: "{{ mongo_admin_password }}"  # Provide the MongoDB admin password
-        name: "{{ mongo_admin_user }}"
-        password: "{{ mongo_admin_password }}"
-        database: admin
-        roles:
-          - role: "root"
-            db: "admin"
-      retries: 3
-      delay: 10
-
-    - name: Create MongoDB database user
-      community.mongodb.mongodb_user:
-        login_user: "{{ mongo_admin_user }}"      # Use the same MongoDB admin username for login
-        login_password: "{{ mongo_admin_password }}"  # Use the same MongoDB admin password for login
-        name: "{{ mongo_db_user }}"
-        password: "{{ mongo_db_password }}"
-        database: "{{ db_name }}"
-        roles:
-          - role: "readWrite"
-            db: "{{ db_name }}"
-      retries: 3
-      delay: 10
 
