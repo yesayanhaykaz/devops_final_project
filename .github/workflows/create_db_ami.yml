@@ -11,8 +11,11 @@ jobs:
     env:
       AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
       AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-
+      
     steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4  # Checks out your repository to the runner
+
       - name: Print Current Directory
         run: pwd  # Prints the current directory
 
