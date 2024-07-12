@@ -44,7 +44,7 @@ source "amazon-ebs" "example" {
   source_ami     = var.ami_name
   instance_type  = var.instance_type
   ssh_username   = var.ssh_username
-  ami_name       = "testubuntu-mongodb_ami"
+  ami_name       = "ubuntu22.04-mongodb_ami"
   access_key     = var.aws_access_key       
   secret_key     = var.aws_secret_key   
 }
