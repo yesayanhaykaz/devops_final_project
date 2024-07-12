@@ -1,9 +1,9 @@
----
 - name: Set up MongoDB 6.0 on Ubuntu 22.04
   hosts: localhost
   connection: local
   become: yes
   vars:
+    ansible_python_interpreter: /usr/bin/python3
     mongo_version: "6.0"
     mongo_repo_url: "https://repo.mongodb.org/apt/ubuntu"
     mongo_distribution: "jammy"
@@ -11,11 +11,11 @@
     mongo_key_url: "https://www.mongodb.org/static/pgp/server-6.0.asc"
     mongo_keyring: "/usr/share/keyrings/mongodb-archive-keyring.gpg"
     mongo_conf_file: "/etc/mongod.conf"
-    db_name: "mydatabase"
-    mongo_admin_user: "admin"
-    mongo_admin_password: "smartes"
-    mongo_db_user: "dbuser"
-    mongo_db_password: "dbpassword"
+    database_name: "mydatabase"
+    mongodb_root_user: "admin"
+    mongodb_root_password: "smartes"
+    mongodb_admin_user: "dbuser"
+    mongodb_admin_password: "dbpassword"
  
   tasks:
     - name: Install required dependencies
@@ -59,6 +59,14 @@
         name: mongodb-org
         state: present
 
+    - name: Modify MongoDB configuration file
+      ansible.builtin.blockinfile:
+        path: "{{ mongo_conf_file }}"
+        block: |
+          security:
+            authorization: enabled
+        create: yes
+
     - name: Ensure MongoDB service is enabled
       ansible.builtin.systemd:
         name: mongod
@@ -90,29 +98,23 @@
         name: mongod
         state: restarted
 
-    - name: Create MongoDB admin user
-      community.mongodb.mongodb_user:
-        login_user: "{{ mongo_admin_user }}"      # Provide the MongoDB admin username
-        login_password: "{{ mongo_admin_password }}"  # Provide the MongoDB admin password
-        name: "{{ mongo_admin_user }}"
-        password: "{{ mongo_admin_password }}"
-        database: admin
-        roles:
-          - role: "root"
-            db: "admin"
-      retries: 3
-      delay: 10
+    - name: Create MongoDB root user
+      mongodb_user:
+        login_port: "27017"
+        database: "admin"
+        name: "{{ mongodb_root_user }}"
+        password: "{{ mongodb_root_password }}"
+        roles: "root"
 
-    - name: Create MongoDB database user
-      community.mongodb.mongodb_user:
-        login_user: "{{ mongo_admin_user }}"      # Use the same MongoDB admin username for login
-        login_password: "{{ mongo_admin_password }}"  # Use the same MongoDB admin password for login
-        name: "{{ mongo_db_user }}"
-        password: "{{ mongo_db_password }}"
-        database: "{{ db_name }}"
+    - name: Create MongoDB administrative user siteUserAdmin
+      mongodb_user:
+        login_user: "{{ mongodb_root_user }}"
+        login_password: "{{ mongodb_root_password }}"
+        login_port: "27017"
+        database: "{{ database_name }}"
+        name: "{{ mongodb_admin_user }}"
+        password: "{{ mongodb_admin_password }}"
         roles:
-          - role: "readWrite"
-            db: "{{ db_name }}"
-      retries: 3
-      delay: 10
+          - { db: "admin", role: "readWrite" }
+          - { db: "{{ database_name }}", role: "readWrite" }
 

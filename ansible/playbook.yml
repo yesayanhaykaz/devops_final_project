@@ -10,6 +10,11 @@
     mongo_key_url: "https://www.mongodb.org/static/pgp/server-6.0.asc"
     mongo_keyring: "/usr/share/keyrings/mongodb-archive-keyring.gpg"
     mongo_conf_file: "/etc/mongod.conf"
+    database_name: "mydatabase"
+    mongodb_root_user: "admin"
+    mongodb_root_password: "smartes"
+    mongodb_admin_user: "dbuser"
+    mongodb_admin_password: "dbpassword"
 
   tasks:
     - name: Add MongoDB GPG key
@@ -53,9 +58,6 @@
         block: |
           security:
             authorization: enabled
-          net:
-            port: 27017
-            bindIp: 127.0.0.1
         create: yes
 
     - name: Allow MongoDB port through firewall
@@ -67,4 +69,35 @@
       ansible.builtin.systemd:
         name: mongod
         state: restarted
+
+    - name: Check MongoDB service status
+      systemd:
+        name: mongod  # MongoDB service name might vary; adjust as needed
+        state: started
+      register: mongodb_status
+
+    - name: Print MongoDB service status
+      debug:
+        msg: "MongoDB service status is {{ mongodb_status }}"
+    
+    - name: Create MongoDB root user
+      mongodb_user:
+        login_port: "27017"
+        database: "admin"
+        name: "{{ mongodb_root_user }}"
+        password: "{{ mongodb_root_password }}"
+        roles: "root"
+
+    - name: Create MongoDB administrative user siteUserAdmin
+      mongodb_user:
+        login_user: "{{ mongodb_root_user }}"
+        login_password: "{{ mongodb_root_password }}"
+        login_port: "27017"
+        database: "{{ database_name }}"
+        name: "{{ mongodb_admin_user }}"
+        password: "{{ mongodb_admin_password }}"
+        roles:
+          - { db: "admin", role: "readWrite" }
+          - { db: "{{ database_name }}", role: "readWrite" }
+
 
