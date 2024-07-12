@@ -37,10 +37,10 @@ jobs:
           sudo mv packer_install/packer /usr/local/bin/
           rm -rf packer.zip packer_install  # Clean up extracted files and zip
           packer --version  # Verify Packer installation
-          packer init /home/runner/work/devops_final_project/devops_final_project/main/packer/mongodb.pkr.hcl  # Initialize Packer configuration
+          packer init /home/runner/work/devops_final_project/devops_final_project/packer/mongodb.pkr.hcl  # Initialize Packer configuration
 
       - name: Validate Packer Template
-        run: packer validate /home/runner/work/devops_final_project/devops_final_project/main/packer/mongodb.pkr.hcl
+        run: packer validate /home/runner/work/devops_final_project/devops_final_project/packer/mongodb.pkr.hcl
 
       - name: Run Packer build and print AMI ID
         id: packer-build
