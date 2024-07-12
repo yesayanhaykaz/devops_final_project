@@ -11,22 +11,18 @@ jobs:
     env:
       AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
       AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-      
 
     steps:
       - name: Set up Python
         uses: actions/setup-python@v2
         with:
-          python-version: '3.11'
+          python-version: '3.9'  # Adjust to a Python version available in your environment
 
-      - name: Install Ansible
+      - name: Install Ansible and Dependencies
         run: |
           sudo apt update
           sudo apt install -y ansible
-          
-      - name: Install psycopg2-binary
-        run: |
-          sudo /opt/pipx/venvs/ansible-core/bin/python -m pip install psycopg2-binary
+          sudo /opt/pipx/venvs/ansible-core/bin/python -m pip install psycopg2-binary  # Install psycopg2-binary if needed
 
       - name: Install Latest Packer and Initialize
         run: |
@@ -35,17 +31,20 @@ jobs:
           sudo mv packer_install/packer /usr/local/bin/
           rm -rf packer.zip packer_install  # Clean up extracted files and zip
           packer --version  # Verify Packer installation
-          packer init packer/mongodb.pkr.hcl
+          packer init packer/mongodb.pkr.hcl  # Initialize Packer configuration
 
       - name: Validate Packer Template
         run: packer validate packer/mongodb.pkr.hcl
 
       - name: Run Packer build and print AMI ID
+        id: packer-build
         run: |
-          packer build -machine-readable -var aws_access_key=${{ secrets.AWS_ACCESS_KEY_ID }} -var aws_secret_key=${{ secrets.AWS_SECRET_ACCESS_KEY }} /home/runner/work/devops_final_project/devops_final_project/main/packer/mongodb.pkr.hcl | tee packer_output.txt
-          ami_id=$(awk -F, '$0 ~/artifact,0,id/ {print $6}' packer_output.txt)
-          echo "AMI_ID=$ami_id" >> $GITHUB_ENV
-          echo "AMI_ID=$ami_id"  # Print AMI ID to console
+          packer build -machine-readable \
+            -var aws_access_key=${{ secrets.AWS_ACCESS_KEY_ID }} \
+            -var aws_secret_key=${{ secrets.AWS_SECRET_ACCESS_KEY }} \
+            /home/runner/work/devops_final_project/devops_final_project/main/packer/mongodb.pkr.hcl | tee packer_output.txt
+          echo "AMI_ID=$(awk -F, '$0 ~/artifact,0,id/ {print $6}' packer_output.txt)" >> $GITHUB_ENV
+          echo "AMI_ID=$(awk -F, '$0 ~/artifact,0,id/ {print $6}' packer_output.txt)"  # Print AMI ID to console
 
       - name: Save AMI_ID as artifact
         uses: actions/upload-artifact@v2
