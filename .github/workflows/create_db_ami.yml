@@ -14,12 +14,6 @@ jobs:
       
 
     steps:
-      - name: Checkout packer_ansible branch
-        uses: actions/checkout@v2
-        with:
-          ref: packer_ansible
-          path: packer_ansible
-     
       - name: Set up Python
         uses: actions/setup-python@v2
         with:
