@@ -20,5 +20,7 @@ jobs:
 
       - name: List Files in Repository
         run: ls -l
-
+      
+      - name: PWD after checkout
+        run: pwd
       # Add more steps for your Packer and Ansible build process here
