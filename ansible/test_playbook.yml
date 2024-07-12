@@ -1,3 +1,4 @@
+---
 - name: Set up MongoDB 6.0 on Ubuntu 22.04
   hosts: localhost
   connection: local
@@ -12,26 +13,45 @@
     mongo_conf_file: "/etc/mongod.conf"
 
   tasks:
+    - name: Install required dependencies
+      ansible.builtin.apt:
+        name: gnupg
+        state: present
+        update_cache: yes
+
+    - name: Remove existing MongoDB APT sources list file
+      ansible.builtin.file:
+        path: /etc/apt/sources.list.d/mongodb-org-6.0.list
+        state: absent
+
+    - name: Clean APT cache
+      ansible.builtin.apt:
+        update_cache: yes
+        autoclean: yes
+
     - name: Add MongoDB GPG key
-      ansible.builtin.shell: |
-        wget -qO - https://www.mongodb.org/static/pgp/server-6.0.asc | sudo apt-key add -
+      ansible.builtin.apt_key:
+        url: "{{ mongo_key_url }}"
+        state: present
+        keyring: "{{ mongo_keyring }}"
 
     - name: Add MongoDB APT repository
-      ansible.builtin.shell: |
-        echo "deb [ arch=amd64,arm64 ] https://repo.mongodb.org/apt/ubuntu jammy/mongodb-org/6.0 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-6.0.list
+      ansible.builtin.apt_repository:
+        repo: "deb [ arch=amd64,arm64 signed-by={{ mongo_keyring }} ] {{ mongo_repo_url }} {{ mongo_distribution }}/mongodb-org/{{ mongo_version }} {{ mongo_component }}"
+        state: present
+        filename: "mongodb-org-{{ mongo_version }}.list"
 
     - name: Update APT cache
-      apt:
+      ansible.builtin.apt:
         update_cache: yes
 
     - name: Upgrade all APT packages
-      apt:
+      ansible.builtin.apt:
         upgrade: dist
 
     - name: Install MongoDB
       ansible.builtin.apt:
-        name:
-          - mongodb-org
+        name: mongodb-org
         state: present
 
     - name: Ensure MongoDB service is enabled
@@ -40,12 +60,9 @@
         enabled: yes
 
     - name: Start MongoDB service
-      ansible.builtin.service:
+      ansible.builtin.systemd:
         name: mongod
         state: started
-
-    - name: Check MongoDB service status
-      ansible.builtin.service_facts:
 
     - name: Modify MongoDB configuration file
       ansible.builtin.blockinfile:
