@@ -45,7 +45,7 @@ jobs:
       - name: Validate Packer Template
         run: |
           cd packer
-          packer validate packer/mongodb.pkr.hcl
+          packer validate mongodb.pkr.hcl
 
       - name: Run Packer build and print AMI ID
         id: packer-build
