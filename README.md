@@ -1,51 +1,51 @@
-DevOps Project README
-Welcome to the DevOps project README. This document provides an overview of the project and detailed instructions for setting up and deploying the infrastructure and applications.
+#React-Express-MongoDB Deployment
 
-Project Overview
+
+***Welcome to the DevOps project README. This document provides an overview of the project and detailed instructions for setting up and deploying the infrastructure and applications.
+***
+
+###Project Overview
+
 This project aims to deploy a scalable web application infrastructure on AWS using Terraform, Packer, Ansible, GitHub Actions, CloudFront, and Amazon EKS. Below are the main tasks and their respective setups:
 
-Tasks
-Database Creation with Packer + Ansible and Deployment on EC2
-
+##Tasks
+** 1. Database Creation with Packer + Ansible and Deployment on EC2 **
 Description: Create a database using Packer and Ansible and deploy it on EC2 instances.
-Remote Backend on S3 Bucket
+**2. Remote Backend on S3 Bucket
+**Description: Configure Terraform to use S3 as a remote backend for state storage.
+**3. Infrastructure Creation with Terraform on AWS
+**Description: Use Terraform to provision infrastructure on AWS.
+**4. Building React Files with GitHub Actions and Uploading to S3 Bucket
+**Description: Automate the build process of React files using GitHub Actions and deploy to an S3 bucket.
+**5. Frontend Serving with CloudFront, SSL Setup, and HTTPS Redirections
+**Description: Serve the frontend application using CloudFront with SSL setup and HTTPS redirections.
+**6. Backend Deployment on EKS with Minimum 3 Replicas
+**Description: Deploy the backend application on Amazon EKS with a minimum of 3 replicas for scalability and high availability.
 
-Description: Configure Terraform to use S3 as a remote backend for state storage.
-Infrastructure Creation with Terraform on AWS
-
-Description: Use Terraform to provision infrastructure on AWS.
-Building React Files with GitHub Actions and Uploading to S3 Bucket
-
-Description: Automate the build process of React files using GitHub Actions and deploy to an S3 bucket.
-Frontend Serving with CloudFront, SSL Setup, and HTTPS Redirections
-
-Description: Serve the frontend application using CloudFront with SSL setup and HTTPS redirections.
-Backend Deployment on EKS with Minimum 3 Replicas
-
-Description: Deploy the backend application on Amazon EKS with a minimum of 3 replicas for scalability and high availability.
-Setup Instructions
+##Setup Instructions
 Prerequisites
-Ensure you have the following installed and configured:
-
+**Ensure you have the following installed and configured:
+**
 AWS CLI
 Terraform
 Packer
 Ansible
-GitHub Actions setup with appropriate secrets and workflows
+
+###GitHub Actions setup with appropriate secrets and workflows
 Steps
+
 Automating PostgreSQL AMI Creation with Packer, Ansible, and GitHub Actions
 Overview: This guide shows you how to automate creating an AWS AMI with PostgreSQL using Packer, Ansible, and GitHub Actions.
 
 Create the Packer Template
-
 Make a Packer template to set up the AMI build process. This template specifies the base AMI, instance type, region, and the Ansible playbook for provisioning.
 Create the Ansible Playbook
 
 Write an Ansible playbook to install and set up PostgreSQL on the instance. The playbook handles installing PostgreSQL, starting the service, and creating a PostgreSQL user and database.
 Set Up GitHub Actions Workflow
 
-Set up a GitHub Actions workflow to automate the AMI creation. The workflow includes steps to:
-Check out the repository
+**Set up a GitHub Actions workflow to automate the AMI creation. The workflow includes steps to:
+**Check out the repository
 Set up Python and Ansible
 Install Packer and AWS CLI
 Configure AWS credentials
@@ -53,8 +53,10 @@ Build the AMI
 Capture and output the AMI ID
 Add Secrets to GitHub
 
-Securely store your AWS credentials in GitHub Secrets. This allows the workflow to access the needed credentials to build the AMI.
-Using the AMI with Terraform
+**Securely store your AWS credentials in GitHub Secrets. This allows the workflow to access the needed credentials to build the AMI.
+**
+
+###Using the AMI with Terraform
 
 After the AMI is created, use the AMI ID in your Terraform configuration to launch an EC2 instance. This allows you to deploy infrastructure using the newly created AMI.
 Conclusion: Following these steps, you can automate the creation of an AWS AMI with PostgreSQL using Packer, Ansible, and GitHub Actions. This makes it easier to manage and deploy your infrastructure.
@@ -86,17 +88,29 @@ Use CloudFront to serve your frontend files from S3. CloudFront will cache your 
 Create a GitHub Actions Workflow
 
 Create a new YAML file (e.g., .github/workflows/deploy-infrastructure.yml) in your repository under the .github/workflows/ directory. This file will define the GitHub Actions workflow for deploying your Terraform infrastructure.
+
 Building React Files with GitHub Actions and Uploading to S3 Bucket
+
 Configure GitHub Actions workflows in .github/workflows/ to build React files.
+
 Ensure the workflow uploads the built files to the designated S3 bucket.
+
 Frontend Serving with CloudFront, SSL Setup, and HTTPS Redirections
+
 Create a CloudFront distribution with the S3 bucket as the origin.
+
 Obtain or import an SSL certificate from AWS ACM.
+
 Configure CloudFront to use HTTPS and set up HTTP to HTTPS redirections.
+
 Backend Deployment on EKS with Minimum 3 Replicas
+
 Define Kubernetes manifests (deployment.yaml, service.yaml) for the backend application.
+
 Create a new YAML file (e.g., .github/workflows/deploy-backend-eks.yml) in your repository under the .github/workflows/ directory. This file will define the GitHub Actions workflow for deploying your backend application on EKS with a minimum of 3 replicas.
-Project Requirements
+
+##Project Requirements
+
 Create Infrastructure with Terraform on AWS
 Remote Backend on S3 Bucket
 Database Creation with Packer + Ansible and Deployment on EC2 Instance
