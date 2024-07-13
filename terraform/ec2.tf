@@ -3,7 +3,7 @@ resource "aws_instance" "database_server" {
   ami           = var.ami_id
   instance_type = var.instance_type
   monitoring    = true
-  subnet_id     = aws_subnet.private[0].id
+  subnet_id     = aws_subnet.private_1[0].id
 
   vpc_security_group_ids = [aws_security_group.web_sg.id]
 

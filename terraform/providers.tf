@@ -1,16 +1,13 @@
-# providers.tf
+provider "aws" {
+  profile = "terraform"
+  region  = "us-east-1"
+}
+
 terraform {
   required_providers {
     aws = {
       source  = "hashicorp/aws"
-      version = "~> 4.0"  # Specify the AWS provider version
+      version = "~> 3.21"
     }
   }
 }
-
-provider "aws" {
-  region = var.region
-  profile = "default"  # Use the profile name from the credentials file
-
-}
-

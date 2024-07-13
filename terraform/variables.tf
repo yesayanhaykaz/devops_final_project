@@ -13,9 +13,19 @@ variable "public_subnet_cidr" {
   default     = "10.0.1.0/24"
 }
 
-variable "private_subnet_cidrs" {
+variable "public_2_subnet_cidr" {
+  description = "The CIDR block for the public subnet"
+  default     = "10.0.30.0/24"
+}
+
+variable "private_1_subnet_cidrs" {
   description = "The CIDR block for the private subnet"
   default     = "10.0.2.0/24"
+}
+
+variable "private_2_subnet_cidrs" {
+  description = "The CIDR block for the private subnet"
+  default     = "10.0.40.0/24"
 }
 
 variable "instance_type" {

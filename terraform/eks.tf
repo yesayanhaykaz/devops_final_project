@@ -1,40 +1,75 @@
-module "eks" {
-  source          = "terraform-aws-modules/eks/aws"
-  cluster_name    = var.cluster_name
-  cluster_version = "1.21"
-  vpc_id          = aws_vpc.main.id  # Assuming this is how VPC ID is provided
+# Resource: aws_iam_role
+# https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role
 
-  tags = {
-    Environment = "dev"
-  }
-}
+resource "aws_iam_role" "eks_cluster" {
+  # The name of the role
+  name = "eks-cluster"
 
-resource "aws_eks_node_group" "example" {
-  cluster_name    = module.eks.cluster_id
-  node_group_name = "example"
-  node_role_arn   = aws_iam_role.eks_node_role.arn  # Ensure aws_iam_role.eks_node_role is defined
-  subnet_ids      = aws_subnet.public[*].id
-  instance_types  = ["t3.medium"]
-  scaling_config {
-    desired_size = 2
-    max_size     = 3
-    min_size     = 1
-  }
-}
-
-resource "aws_iam_role" "eks_node_role" {
-  name = "eks-node-role"
-  assume_role_policy = jsonencode({
-    Version = "2012-10-17",
-    Statement = [{
-      Effect    = "Allow",
-      Principal = {
-        Service = "eks.amazonaws.com"
+  # The policy that grants an entity permission to assume the role.
+  # Used to access AWS resources that you might not normally have access to.
+  # The role that Amazon EKS will use to create AWS resources for Kubernetes clusters
+  assume_role_policy = <<POLICY
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Principal": {
+        "Service": "eks.amazonaws.com"
       },
-      Action = "sts:AssumeRole"
-    }]
-  })
-
-  // Attach policies or add other configurations as needed
+      "Action": "sts:AssumeRole"
+    }
+  ]
+}
+POLICY
 }
 
+# Resource: aws_iam_role_policy_attachment
+# https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role_policy_attachment
+
+resource "aws_iam_role_policy_attachment" "amazon_eks_cluster_policy" {
+  # The ARN of the policy you want to apply
+  # https://github.com/SummitRoute/aws_managed_policies/blob/master/policies/AmazonEKSClusterPolicy
+  policy_arn = "arn:aws:iam::aws:policy/AmazonEKSClusterPolicy"
+
+  # The role the policy should be applied to
+  role = aws_iam_role.eks_cluster.name
+}
+
+# Resource: aws_eks_cluster
+# https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/eks_cluster
+
+resource "aws_eks_cluster" "eks" {
+  # Name of the cluster.
+  name = "eks"
+
+  # The Amazon Resource Name (ARN) of the IAM role that provides permissions for 
+  # the Kubernetes control plane to make calls to AWS API operations on your behalf
+  role_arn = aws_iam_role.eks_cluster.arn
+
+  # Desired Kubernetes master version
+  version = "1.30"
+
+  vpc_config {
+    # Indicates whether or not the Amazon EKS private API server endpoint is enabled
+    endpoint_private_access = false
+
+    # Indicates whether or not the Amazon EKS public API server endpoint is enabled
+    endpoint_public_access = true
+
+    # Must be in at least two different availability zones
+    subnet_ids = [
+      aws_subnet.public_1[0].id,
+      aws_subnet.public_2[0].id,
+      aws_subnet.private_1[0].id,
+      aws_subnet.private_2[0].id,
+
+    ]
+  }
+
+  # Ensure that IAM Role permissions are created before and deleted after EKS Cluster handling.
+  # Otherwise, EKS will not be able to properly delete EKS managed EC2 infrastructure such as Security Groups.
+  depends_on = [
+    aws_iam_role_policy_attachment.amazon_eks_cluster_policy
+  ]
+}
