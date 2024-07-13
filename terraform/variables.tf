@@ -8,10 +8,14 @@ variable "vpc_cidr" {
   default     = "10.0.0.0/16"
 }
 
-variable "subnet_cidrs" {
-  description = "The CIDR blocks for the subnets"
-  type        = list(string)
-  default     = ["10.0.1.0/24", "10.0.2.0/24"]
+variable "public_subnet_cidr" {
+  description = "The CIDR block for the public subnet"
+  default     = "10.0.1.0/24"
+}
+
+variable "private_subnet_cidrs" {
+  description = "The CIDR block for the private subnet"
+  default     = "10.0.2.0/24"
 }
 
 variable "instance_type" {
@@ -21,7 +25,7 @@ variable "instance_type" {
 
 variable "ami_id" {
   description = "The AMI ID for the EC2 instance"
-  default     = "ami-xxxxxxxx"  # Replace with your AMI ID
+  default     = "ami-0cebc95b1a80918a5"  # Replace with your AMI ID
 }
 
 variable "key_name" {
@@ -44,9 +48,10 @@ variable "node_group_size" {
   default     = 3
 }
 
+
 variable "s3_bucket_name" {
   description = "The name of the S3 bucket for the frontend"
-  default     = "my-frontend-bucket"
+  default     = "my-frontend-bucket-"
 }
 
 variable "cloudfront_certificate_arn" {

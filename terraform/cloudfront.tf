@@ -1,3 +1,12 @@
+resource "time_static" "epoch" {}
+locals {
+  s3_name = "${var.s3_bucket_name}-${time_static.epoch.unix}"
+}
+resource "aws_s3_bucket" "frontend" {
+  bucket = local.s3_name 
+  # other configurations as needed
+}
+
 resource "aws_cloudfront_distribution" "frontend_distribution" {
   origin {
     domain_name = aws_s3_bucket.frontend.bucket_regional_domain_name
@@ -34,8 +43,19 @@ resource "aws_cloudfront_distribution" "frontend_distribution" {
   price_class = "PriceClass_100"
 
   viewer_certificate {
-    acm_certificate_arn = var.cloudfront_certificate_arn
-    ssl_support_method  = "sni-only"
+    cloudfront_default_certificate = true
+#    acm_certificate_arn = var.cloudfront_certificate_arn
+#    ssl_support_method  = "sni-only"
+  }
+
+  restrictions {
+    geo_restriction {
+      restriction_type = "whitelist"
+      locations        = ["US"]  # Add your desired countries or leave as needed
+
+      # Uncomment and adjust as needed for IP address or IP range restrictions
+      # ip_addresses = ["10.0.2.0/24", "10.0.1.0/24"]
+    }
   }
 }
 
