@@ -1,4 +1,3 @@
-
 #React-Express-MongoDB Deployment
 
 
@@ -27,13 +26,14 @@ Description: Create a database using Packer and Ansible and deploy it on EC2 ins
 Prerequisites
 **Ensure you have the following installed and configured:
 **
+
 AWS CLI
 Terraform
 Packer
 Ansible
 
-###GitHub Actions setup with appropriate secrets and workflows
-Steps
+##GitHub Actions setup with appropriate secrets and workflows
+###Steps
 
 Automating PostgreSQL AMI Creation with Packer, Ansible, and GitHub Actions
 Overview: This guide shows you how to automate creating an AWS AMI with PostgreSQL using Packer, Ansible, and GitHub Actions.
@@ -46,7 +46,8 @@ Write an Ansible playbook to install and set up PostgreSQL on the instance. The 
 Set Up GitHub Actions Workflow
 
 **Set up a GitHub Actions workflow to automate the AMI creation. The workflow includes steps to:
-**Check out the repository
+**
+Check out the repository
 Set up Python and Ansible
 Install Packer and AWS CLI
 Configure AWS credentials
@@ -62,42 +63,41 @@ Add Secrets to GitHub
 After the AMI is created, use the AMI ID in your Terraform configuration to launch an EC2 instance. This allows you to deploy infrastructure using the newly created AMI.
 Conclusion: Following these steps, you can automate the creation of an AWS AMI with PostgreSQL using Packer, Ansible, and GitHub Actions. This makes it easier to manage and deploy your infrastructure.
 
-Remote Backend on S3 Bucket
+###Remote Backend on S3 Bucket
 Create an S3 bucket manually.
 Update backend.tf to configure Terraform to use the S3 bucket as the backend.
 Infrastructure Setup with Terraform
 This guide outlines the setup of a complete infrastructure on AWS using Terraform. The infrastructure includes a VPC, an EC2 instance with a PostgreSQL image created using Packer and Ansible, an EKS cluster for the backend, a load balancer, S3 for the frontend, and CloudFront for serving the frontend.
 
-Set Up a VPC
+###Set Up a VPC
 
 Create a Virtual Private Cloud (VPC) to isolate your resources. Configure subnets, route tables, and internet gateways to allow communication within the VPC and to the internet.
-Launch an EC2 Instance
+
+###Launch an EC2 Instance
 
 Use the AMI created by Packer and Ansible to launch an EC2 instance. This instance will have PostgreSQL installed and configured, ready for your applications to use.
-Set Up an EKS Cluster
+###Set Up an EKS Cluster
 
 Create an Amazon Elastic Kubernetes Service (EKS) cluster to manage your backend services. This cluster will run your applications in a highly available and scalable environment.
-Configure a Load Balancer
+###Configure a Load Balancer
 
 Set up a load balancer using Terraform to distribute traffic to your backend services running in the EKS cluster. This ensures that your applications can handle varying loads and remain accessible.
-Set Up S3 for Frontend
+###Set Up S3 for Frontend
 
 Create an S3 bucket using Terraform to store your frontend files. These files can be static assets like HTML, CSS, and JavaScript, which will be served to users. Automate this setup with GitHub Actions.
-Configure CloudFront
+###Configure CloudFront
 
 Use CloudFront to serve your frontend files from S3. CloudFront will cache your files at edge locations worldwide, providing faster access to users and reducing load on your S3 bucket. Automate this configuration with GitHub Actions.
-Create a GitHub Actions Workflow
+###Create a GitHub Actions Workflow
 
 Create a new YAML file (e.g., .github/workflows/deploy-infrastructure.yml) in your repository under the .github/workflows/ directory. This file will define the GitHub Actions workflow for deploying your Terraform infrastructure.
 
-Building React Files with GitHub Actions and Uploading to S3 Bucket
+###Building React Files with GitHub Actions and Uploading to S3 Bucket
 
 Configure GitHub Actions workflows in .github/workflows/ to build React files.
-
 Ensure the workflow uploads the built files to the designated S3 bucket.
 
-Frontend Serving with CloudFront, SSL Setup, and HTTPS Redirections
-
+###Frontend Serving with CloudFront, SSL Setup, and HTTPS Redirections
 Create a CloudFront distribution with the S3 bucket as the origin.
 
 Obtain or import an SSL certificate from AWS ACM.
@@ -120,3 +120,6 @@ Frontend Served by CloudFront with SSL Setup and HTTPS Redirections
 Backend Deployment on EKS with Minimum 3 Replicas
 GitHub Main Branch Protection with at Least 1 Reviewer Approval
 GitHub Actions Should Contain All Secrets and Trigger for All Deployments
+
+
+------------
