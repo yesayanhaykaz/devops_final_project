@@ -1,10 +1,22 @@
 resource "time_static" "epoch" {}
+
 locals {
   s3_name = "${var.s3_bucket_name}-${time_static.epoch.unix}"
 }
+
 resource "aws_s3_bucket" "frontend" {
   bucket = local.s3_name 
   # other configurations as needed
+}
+
+# Set "block all public access" to false
+resource "aws_s3_bucket_public_access_block" "frontend" {
+  bucket = aws_s3_bucket.frontend.id
+
+  block_public_acls       = false
+  block_public_policy     = false
+  ignore_public_acls      = false
+  restrict_public_buckets = false
 }
 
 resource "aws_cloudfront_distribution" "frontend_distribution" {
@@ -44,17 +56,12 @@ resource "aws_cloudfront_distribution" "frontend_distribution" {
 
   viewer_certificate {
     cloudfront_default_certificate = true
-#    acm_certificate_arn = var.cloudfront_certificate_arn
-#    ssl_support_method  = "sni-only"
   }
 
   restrictions {
     geo_restriction {
       restriction_type = "whitelist"
       locations        = ["US"]  # Add your desired countries or leave as needed
-
-      # Uncomment and adjust as needed for IP address or IP range restrictions
-      # ip_addresses = ["10.0.2.0/24", "10.0.1.0/24"]
     }
   }
 }
