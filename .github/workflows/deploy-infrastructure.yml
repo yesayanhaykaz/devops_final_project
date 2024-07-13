@@ -19,7 +19,7 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: packer_output
-          path: ./packer/*
+          path: ./packer/
 
       - name: Extract AMI ID
         id: ami-id
