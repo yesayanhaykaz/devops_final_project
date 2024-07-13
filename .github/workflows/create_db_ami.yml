@@ -68,4 +68,5 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: packer-output
-          path: packer_output.txt
+          path: ./
+          if-no-files-found: error
