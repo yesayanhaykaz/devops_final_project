@@ -33,16 +33,6 @@ variable "instance_type" {
   default     = "t2.micro"
 }
 
-variable "ami_id" {
-  description = "The AMI ID for the EC2 instance"
-  default     = "ami-0cebc95b1a80918a5"  # Replace with your AMI ID
-}
-
-variable "key_name" {
-  description = "The key pair name for SSH access to the EC2 instance"
-  default     = "your-key-name"  # Replace with your key pair name
-}
-
 variable "cluster_name" {
   description = "The name of the EKS cluster"
   default     = "my-cluster"
@@ -58,14 +48,8 @@ variable "node_group_size" {
   default     = 3
 }
 
-
 variable "s3_bucket_name" {
   description = "The name of the S3 bucket for the frontend"
   default     = "my-frontend-bucket-"
-}
-
-variable "cloudfront_certificate_arn" {
-  description = "The ARN of the ACM certificate for CloudFront"
-  default     = "arn:aws:acm:us-east-1:xxxxxxxxxxxx:certificate/xxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
 }
 
