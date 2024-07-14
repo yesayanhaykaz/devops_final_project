@@ -1,0 +1,24 @@
+name: Retrieve and Use Variable
+
+on:
+  workflow_dispatch:
+
+jobs:
+  use-variable:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Download Variable Artifact
+        uses: actions/download-artifact@v2
+        with:
+          name: test-variable
+          path: ./artifact
+
+      - name: Set TEST_VARIABLE Environment Variable
+        run: echo "TEST_VARIABLE=$(cat ./artifact/test_variable.txt | cut -d '=' -f 2)" >> $GITHUB_ENV
+
+      - name: Print TEST_VARIABLE
+        run: echo "The value of TEST_VARIABLE is ${{ env.TEST_VARIABLE }}"
