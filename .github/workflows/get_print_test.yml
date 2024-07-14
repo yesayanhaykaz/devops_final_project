@@ -17,6 +17,9 @@ jobs:
           name: test-variable
           path: ./artifact
 
+      - name: List files for debugging
+        run: ls -al ./artifact
+
       - name: Read variable from file
         id: read-variable
         run: |
