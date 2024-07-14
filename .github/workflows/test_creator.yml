@@ -12,8 +12,7 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Create Variable
-        run: |
-          echo "TEST_VARIABLE=HelloWorld" > test_variable.txt
+        run: echo "HelloWorld" > test_variable.txt
 
       - name: Upload Variable Artifact
         uses: actions/upload-artifact@v2
