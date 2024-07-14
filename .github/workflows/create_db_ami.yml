@@ -61,7 +61,7 @@ jobs:
             -var aws_access_key=${{ secrets.AWS_ACCESS_KEY_ID }} \
             -var aws_secret_key=${{ secrets.AWS_SECRET_ACCESS_KEY }} \
             mongodb.pkr.hcl | tee packer_output.txt
-          echo "AMI_ID=$(awk -F, '$0 ~/artifact,0,id/ {print $6}' packer_output.txt)" >> $GITHUB_ENV
+          echo "AMI_ID=$(awk -F, '$0 ~/artifact,0,id/ {print $6}' packer_output.txt)" >> $AMI_ID
           echo "AMI_ID=$(awk -F, '$0 ~/artifact,0,id/ {print $6}' packer_output.txt)"
 
       - name: Save AMI_ID as artifact
