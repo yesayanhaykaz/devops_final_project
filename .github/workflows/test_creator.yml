@@ -1,0 +1,25 @@
+name: Create and Save Variable
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  create-variable:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Create Variable
+        run: |
+          echo "TEST_VARIABLE=HelloWorld" > test_variable.txt
+
+      - name: Upload Variable Artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: test-variable
+          path: test_variable.txt
