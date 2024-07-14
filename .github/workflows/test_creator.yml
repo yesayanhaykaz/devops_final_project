@@ -18,7 +18,7 @@ jobs:
         run: ls -al  # Optional: List files to verify 'test_variable.txt' is created
 
       - name: Upload Variable Artifact
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: test-variable
           path: ./artifact
