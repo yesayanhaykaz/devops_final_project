@@ -15,7 +15,7 @@ jobs:
         run: echo "HelloWorld" > test_variable.txt
     
       - name: List Files
-        run: ls -l  # Optional: List files to verify 'test_variable.txt' is created
+        run: ls -al  # Optional: List files to verify 'test_variable.txt' is created
 
       - name: Upload Variable Artifact
         uses: actions/upload-artifact@v2
