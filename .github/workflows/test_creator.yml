@@ -22,3 +22,7 @@ jobs:
         with:
           name: test-variable
           path: ./artifact
+          if-no-files-found: create
+          compression-level: 6
+          overwrite: true
+
