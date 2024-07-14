@@ -26,11 +26,19 @@ jobs:
 
       - name: Encrypt the secret value
         env:
-          PUBLIC_KEY: ${{ env.PUBLIC_KEY }}
+          PUBLIC_KEY: ${{ secrets.PUBLIC_KEY }}  # Ensure this secret is correctly set in your repository secrets
         run: |
           TEST_VARIABLE=$(cat test_variable.txt | cut -d '=' -f2)
           echo "Plain text: $TEST_VARIABLE"  # Print for verification in logs
           echo "Public Key: $PUBLIC_KEY"  # Print for verification in logs
-          ENCRYPTED_VALUE=$(echo -n "$TEST_VARIABLE" | openssl pkeyutl -encrypt -pubin -inkey <(echo "$PUBLIC_KEY" | base64 -d) | base64 -w 0)
+
+          # Decode the base64-encoded public key and write to a temp file
+          echo "$PUBLIC_KEY" | base64 -d > public_key.pem
+
+          # Encrypt the plain text using openssl pkeyutl with the decoded public key
+          ENCRYPTED_VALUE=$(echo -n "$TEST_VARIABLE" | openssl pkeyutl -encrypt -pubin -inkey public_key.pem | base64 -w 0)
           echo "ENCRYPTED_VALUE=$ENCRYPTED_VALUE" >> $GITHUB_ENV
           echo "Encrypted value: $ENCRYPTED_VALUE"  # Print for verification in logs
+
+          # Clean up temp file
+          rm public_key.pem
