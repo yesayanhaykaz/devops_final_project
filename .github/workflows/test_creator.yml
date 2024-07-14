@@ -23,7 +23,8 @@ jobs:
             https://api.github.com/repos/${{ github.repository }}/actions/secrets/public-key)
           echo "PUBLIC_KEY=$(echo $response | jq -r .key | tr -d '\n')" >> $GITHUB_ENV
           echo "KEY_ID=$(echo $response | jq -r .key_id)" >> $GITHUB_ENV
-
+          echo $result
+          
       - name: Encrypt the secret value
         env:
           PUBLIC_KEY: ${{ secrets.PUBLIC_KEY }}  # Ensure this secret is correctly set in your repository secrets
