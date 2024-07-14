@@ -1,9 +1,6 @@
 name: Retrieve and Use Variable
 
 on:
-  push:
-    branches:
-      - main
   workflow_dispatch:
 
 jobs:
