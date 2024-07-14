@@ -18,4 +18,4 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: test-variable
-          path: test_variable.txt
+          path: ./artifact/test_variable.txt
