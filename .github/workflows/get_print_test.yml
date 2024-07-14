@@ -1,6 +1,9 @@
 name: Retrieve and Use Variable
 
 on:
+  push:
+    branches:
+      - main
   workflow_dispatch:
 
 jobs:
@@ -18,7 +21,7 @@ jobs:
           path: ./artifact
 
       - name: Set TEST_VARIABLE Environment Variable
-        run: echo "TEST_VARIABLE=$(cat ./artifact/test_variable.txt | cut -d '=' -f 2)" >> $GITHUB_ENV
+        run: echo "TEST_VARIABLE=$(cat ./artifact/test_variable.txt)" >> $GITHUB_ENV
 
       - name: Print TEST_VARIABLE
         run: echo "The value of TEST_VARIABLE is ${{ env.TEST_VARIABLE }}"
