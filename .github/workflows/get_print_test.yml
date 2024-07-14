@@ -15,7 +15,7 @@ jobs:
         run: ls -al  # Optional: List files to verify 'test_variable.txt' is created
 
       - name: Download Variable Artifact
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v4
         with:
           name: test-variable
           path: ./artifact
