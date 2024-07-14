@@ -11,6 +11,9 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v3
 
+      - name: List Files
+        run: ls -al  # Optional: List files to verify 'test_variable.txt' is created
+
       - name: Download Variable Artifact
         uses: actions/download-artifact@v2
         with:
