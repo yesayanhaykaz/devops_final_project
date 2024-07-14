@@ -1,9 +1,6 @@
 name: Create and Save Variable
 
 on:
-  push:
-    branches:
-      - main
   workflow_dispatch:
 
 jobs:
