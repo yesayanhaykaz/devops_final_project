@@ -22,8 +22,4 @@ jobs:
       - name: Set environment variable
         run: echo "TEST_VARIABLE=$TEST_VARIABLE" >> $GITHUB_ENV
 
-      - name: Display saved environment variable
-        run: echo "Save TEST_VARIABLE: $TEST_VARIABLE"
 
-      - name: Use saved environment variable
-        run: echo "Using TEST_VARIABLE: $TEST_VARIABLE"
