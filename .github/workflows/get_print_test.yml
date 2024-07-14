@@ -1,4 +1,4 @@
-name: Retrieve and Use Variable
+name: Download and Use Variable
 
 on:
   workflow_dispatch:
@@ -8,22 +8,20 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout Repository
+      - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: List Files
-        run: |
-          cd .artifact
-          ls -al  # Optional: List files to verify 'test_variable.txt' is created
-          
-      - name: Download Variable Artifact
-        uses: actions/download-artifact@v4
+      - name: Download artifact
+        uses: actions/download-artifact@v2
         with:
           name: test-variable
           path: ./artifact
 
-      - name: Set TEST_VARIABLE Environment Variable
-        run: echo "TEST_VARIABLE=$(cat ./artifact/test_variable.txt)" >> $GITHUB_ENV
+      - name: Read variable from file
+        id: read-variable
+        run: |
+          TEST_VARIABLE=$(cat ./artifact/test_variable.txt | cut -d '=' -f2)
+          echo "TEST_VARIABLE=$TEST_VARIABLE" >> $GITHUB_ENV
 
-      - name: Print TEST_VARIABLE
-        run: echo "The value of TEST_VARIABLE is ${{ env.TEST_VARIABLE }}"
+      - name: Use the variable
+        run: echo "The variable is ${{ env.TEST_VARIABLE }}"
