@@ -10,15 +10,15 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
-
+ 
+      - name: List files for debugging
+        run: ls -al ./artifact
+  
       - name: Download artifact
         uses: actions/download-artifact@v2
         with:
           name: test-variable
           path: ./artifact
-
-      - name: List files for debugging
-        run: ls -al ./artifact
 
       - name: Read variable from file
         id: read-variable
