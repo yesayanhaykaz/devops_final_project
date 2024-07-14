@@ -13,18 +13,12 @@ jobs:
  
       - name: List files for debugging
         run: ls -al ./artifact
-  
-      - name: Download artifact
-        uses: actions/download-artifact@v2
-        with:
-          name: test-variable
-          path: ./artifact
-
+        
       - name: Read variable from file
         id: read-variable
         run: |
           TEST_VARIABLE=$(cat ./artifact/test_variable.txt | cut -d '=' -f2)
-          echo "TEST_VARIABLE=$TEST_VARIABLE" >> $GITHUB_ENV
-
+          echo $GITHUB_ENV
+          
       - name: Use the variable
         run: echo "The variable is ${{ env.TEST_VARIABLE }}"
