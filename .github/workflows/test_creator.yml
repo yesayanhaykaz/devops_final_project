@@ -14,18 +14,13 @@ jobs:
       - name: Set variable
         run: echo "TEST_VARIABLE=HelloWorld" > test_variable.txt
 
-      - name: Install GitHub CLI
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y gh
-
-      - name: Authenticate GitHub CLI
+      - name: Create GitHub repository secret
         env:
-          GH_TOKEN: ${{ secrets.GIT_TOKEN }}
-        run: |
-          echo "${{ secrets.GIT_TOKEN }}" | gh auth login --with-token
-
-      - name: Save variable as repository secret
+          GITHUB_TOKEN: ${{ secrets.GIT_TOKEN }}
         run: |
           TEST_VARIABLE=$(cat test_variable.txt | cut -d '=' -f2)
-          gh secret set TEST_VARIABLE --body "$TEST_VARIABLE"
+          curl -X PUT \
+            -H "Authorization: token $GITHUB_TOKEN" \
+            -H "Accept: application/vnd.github.v3+json" \
+            https://api.github.com/repos/${{ github.repository }}/actions/secrets/TEST_VARIABLE \
+            -d '{"encrypted_value":"'$TEST_VARIABLE'"}'
