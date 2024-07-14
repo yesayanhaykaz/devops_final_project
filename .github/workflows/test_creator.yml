@@ -1,4 +1,4 @@
-name: Set Variable and Save Secret
+name: Set Variable and Encrypt
 
 on:
   workflow_dispatch:
@@ -29,16 +29,8 @@ jobs:
           PUBLIC_KEY: ${{ env.PUBLIC_KEY }}
         run: |
           TEST_VARIABLE=$(cat test_variable.txt | cut -d '=' -f2)
-          echo "ENCRYPTED_VALUE=$(echo -n $TEST_VARIABLE | openssl rsautl -encrypt -pubin -inkey <(echo $PUBLIC_KEY | base64 -d) | base64 -w 0)" >> $GITHUB_ENV
-
-      - name: Create GitHub repository secret
-        env:
-          GH_PAT: ${{ secrets.GIT_TOKEN }}
-          ENCRYPTED_VALUE: ${{ env.ENCRYPTED_VALUE }}
-          KEY_ID: ${{ env.KEY_ID }}
-        run: |
-          curl -X PUT \
-            -H "Authorization: token $GH_PAT" \
-            -H "Accept: application/vnd.github.v3+json" \
-            https://api.github.com/repos/${{ github.repository }}/actions/secrets/TEST_VARIABLE \
-            -d "{\"encrypted_value\":\"${ENCRYPTED_VALUE}\",\"key_id\":\"${KEY_ID}\"}"
+          echo "Plain text: $TEST_VARIABLE"  # Print for verification in logs
+          echo "Public Key: $PUBLIC_KEY"  # Print for verification in logs
+          ENCRYPTED_VALUE=$(echo -n "$TEST_VARIABLE" | openssl pkeyutl -encrypt -pubin -inkey <(echo "$PUBLIC_KEY" | base64 -d) | base64 -w 0)
+          echo "ENCRYPTED_VALUE=$ENCRYPTED_VALUE" >> $GITHUB_ENV
+          echo "Encrypted value: $ENCRYPTED_VALUE"  # Print for verification in logs
