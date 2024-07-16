@@ -1,24 +1,25 @@
-name: Create and Save Variable
+name: Set Variable and Save as Environment Variable
 
 on:
   workflow_dispatch:
 
 jobs:
-  create-variable:
+  set-variable:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout Repository
+      - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: Create Variable
-        run: echo "HelloWorld" > test_variable.txt
-    
-      - name: List Files
-        run: ls -al  # Optional: List files to verify 'test_variable.txt' is created
+      - name: Set variable
+        run: echo "TEST_VARIABLE=HelloWorld" > test_variable.txt
 
-      - name: Upload Variable Artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: test-variable
-          path: ./artifact
+      - name: Display variable value
+        run: |
+          TEST_VARIABLE=$(cat test_variable.txt | cut -d '=' -f2)
+          echo "Plain text: $TEST_VARIABLE"  # Print for verification in logs
+
+      - name: Set environment variable
+        run: echo "TEST_VARIABLE=$TEST_VARIABLE" >> $GITHUB_ENV
+
+
