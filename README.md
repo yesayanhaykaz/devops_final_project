@@ -38,15 +38,15 @@ Ensure you have the following installed and configured:
 
 ### Steps
 
-#### Automating PostgreSQL AMI Creation with Packer, Ansible, and GitHub Actions
+#### Automating MongoDB AMI Creation with Packer, Ansible, and GitHub Actions
 
-**Overview:** This guide shows you how to automate creating an AWS AMI with PostgreSQL using Packer, Ansible, and GitHub Actions.
+**Overview:** This guide shows you how to automate creating an AWS AMI with MongoDB using Packer, Ansible, and GitHub Actions.
 
 #### Create the Packer Template
 Make a Packer template to set up the AMI build process. This template specifies the base AMI, instance type, region, and the Ansible playbook for provisioning.
 
 #### Create the Ansible Playbook
-Write an Ansible playbook to install and set up PostgreSQL on the instance. The playbook handles installing PostgreSQL, starting the service, and creating a PostgreSQL user and database.
+Write an Ansible playbook to install and set up MongoDB on the instance. The playbook handles installing MongoDB, starting the service, and creating a MongoDB user and database.
 
 #### Set Up GitHub Actions Workflow
 Set up a GitHub Actions workflow to automate the AMI creation. The workflow includes steps to:
@@ -63,7 +63,7 @@ Securely store your AWS credentials in GitHub Secrets. This allows the workflow 
 #### Using the AMI with Terraform
 After the AMI is created, use the AMI ID in your Terraform configuration to launch an EC2 instance. This allows you to deploy infrastructure using the newly created AMI.
 
-**Conclusion:** Following these steps, you can automate the creation of an AWS AMI with PostgreSQL using Packer, Ansible, and GitHub Actions. This makes it easier to manage and deploy your infrastructure.
+**Conclusion:** Following these steps, you can automate the creation of an AWS AMI with MongoDB using Packer, Ansible, and GitHub Actions. This makes it easier to manage and deploy your infrastructure.
 
 #### Remote Backend on S3 Bucket
 - Create an S3 bucket manually.
@@ -71,13 +71,13 @@ After the AMI is created, use the AMI ID in your Terraform configuration to laun
 
 #### Infrastructure Setup with Terraform
 
-This guide outlines the setup of a complete infrastructure on AWS using Terraform. The infrastructure includes a VPC, an EC2 instance with a PostgreSQL image created using Packer and Ansible, an EKS cluster for the backend, a load balancer, S3 for the frontend, and CloudFront for serving the frontend.
+This guide outlines the setup of a complete infrastructure on AWS using Terraform. The infrastructure includes a VPC, an EC2 instance with a MongoDB image created using Packer and Ansible, an EKS cluster for the backend, a load balancer, S3 for the frontend, and CloudFront for serving the frontend.
 
 #### Set Up a VPC
 Create a Virtual Private Cloud (VPC) to isolate your resources. Configure subnets, route tables, and internet gateways to allow communication within the VPC and to the internet.
 
 #### Launch an EC2 Instance
-Use the AMI created by Packer and Ansible to launch an EC2 instance. This instance will have PostgreSQL installed and configured, ready for your applications to use.
+Use the AMI created by Packer and Ansible to launch an EC2 instance. This instance will have MongoDB installed and configured, ready for your applications to use.
 
 #### Set Up an EKS Cluster
 Create an Amazon Elastic Kubernetes Service (EKS) cluster to manage your backend services. This cluster will run your applications in a highly available and scalable environment.
