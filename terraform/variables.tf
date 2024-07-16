@@ -53,3 +53,7 @@ variable "s3_bucket_name" {
   default     = "my-frontend-bucket-"
 }
 
+variable "ami_id" {
+  description = "AMI id of ec2_instance that will be given by workflow"
+  default     = "ami-0a07351b515e0ec21"
+}
